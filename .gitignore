@@ -1,0 +1,52 @@
+# Node / npm
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+package-lock.json
+
+# Vite / build
+dist/
+.build/
+.vite/
+
+# Tauri / Rust
+src-tauri/target/
+src-tauri/tauri.conf.json.bak
+**/*.db
+*.db
+**/db.sqlite
+target/
+**/target/
+**/*.rlib
+
+# VS Code
+.vscode/
+.vscode/*
+
+# env
+.env
+.env.local
+.env.*.local
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+logs/
+*.log
+.idea/
+
+# Misc
+coverage/
+*.tgz
+*.zip
+
+# If using sqlite for local data
+*.sqlite
+*.sqlite3
+
+# Optional: large artifacts
+dist-electron/
+release/
