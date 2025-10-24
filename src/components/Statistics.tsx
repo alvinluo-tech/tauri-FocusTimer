@@ -3,8 +3,10 @@ import { Calendar, BarChart3, TrendingUp, Clock } from 'lucide-react';
 import { ApiService } from '../services/api';
 import type { StatisticsRequest, StatisticsResponse, StatisticsPeriod } from '../types';
 import { formatDuration, getDateRange, formatDate, calculateCompletionRate } from '../utils/helpers';
+import { useLanguage } from '../i18n/LanguageProvider';
 
 export function Statistics() {
+  const { t } = useLanguage();
   const [statistics, setStatistics] = useState<StatisticsResponse | null>(null);
   const [period, setPeriod] = useState<StatisticsPeriod>('today');
   const [groupBy, setGroupBy] = useState<'Task' | 'TaskGroup'>('Task');
@@ -118,12 +120,12 @@ export function Statistics() {
 
   const getPeriodLabel = (period: StatisticsPeriod): string => {
     switch (period) {
-      case 'today': return '今天';
-      case 'week': return '本周';
-      case 'fifteen_days': return '近15天';
-      case 'month': return '本月';
-      case 'custom': return '自定义';
-      default: return '今天';
+      case 'today': return t.today;
+      case 'week': return t.thisWeek;
+      case 'fifteen_days': return t.last15Days;
+      case 'month': return t.thisMonth;
+      case 'custom': return t.custom;
+      default: return t.today;
     }
   };
 
@@ -132,7 +134,7 @@ export function Statistics() {
       return (
         <div className="empty-state">
           <BarChart3 size={48} />
-          <p>暂无任务统计数据</p>
+          <p>{t.noData}</p>
         </div>
       );
     }
@@ -148,15 +150,15 @@ export function Statistics() {
             <div className="stat-metrics">
               <div className="metric">
                 <Clock size={16} />
-                <span>总时长: {formatDuration(stat.total_duration_minutes)}</span>
+                <span>{t.totalDuration}: {formatDuration(stat.total_duration_minutes)}</span>
               </div>
               <div className="metric">
                 <BarChart3 size={16} />
-                <span>会话数: {stat.total_sessions}</span>
+                <span>{t.sessions}: {stat.total_sessions}</span>
               </div>
               <div className="metric">
                 <TrendingUp size={16} />
-                <span>完成率: {calculateCompletionRate(stat.completed_sessions, stat.total_sessions)}%</span>
+                <span>{t.completionRate}: {calculateCompletionRate(stat.completed_sessions, stat.total_sessions)}%</span>
               </div>
             </div>
             <div className="progress-bar">
@@ -191,19 +193,19 @@ export function Statistics() {
             <div className="stat-metrics">
               <div className="metric">
                 <Clock size={16} />
-                <span>总时长: {formatDuration(stat.total_duration_minutes)}</span>
+                <span>{t.totalDuration}: {formatDuration(stat.total_duration_minutes)}</span>
               </div>
               <div className="metric">
                 <BarChart3 size={16} />
-                <span>任务数: {stat.total_tasks}</span>
+                <span>{t.taskCount}: {stat.total_tasks}</span>
               </div>
               <div className="metric">
                 <BarChart3 size={16} />
-                <span>会话数: {stat.total_sessions}</span>
+                <span>{t.sessions}: {stat.total_sessions}</span>
               </div>
               <div className="metric">
                 <TrendingUp size={16} />
-                <span>完成率: {calculateCompletionRate(stat.completed_sessions, stat.total_sessions)}%</span>
+                <span>{t.completionRate}: {calculateCompletionRate(stat.completed_sessions, stat.total_sessions)}%</span>
               </div>
             </div>
             <div className="progress-bar">
@@ -221,20 +223,20 @@ export function Statistics() {
   return (
     <div className="statistics">
       <div className="statistics-header">
-        <h2>统计报告</h2>
+        <h2>{t.statistics}</h2>
         
         <div className="controls">
           <div className="period-selector">
-            <label>统计周期:</label>
+            <label>{t.statisticsPeriod}:</label>
             <select 
               value={period} 
               onChange={(e) => handlePeriodChange(e.target.value as StatisticsPeriod)}
             >
-              <option value="today">今天</option>
-              <option value="week">本周</option>
-              <option value="fifteen_days">近15天</option>
-              <option value="month">本月</option>
-              <option value="custom">自定义</option>
+              <option value="today">{t.today}</option>
+              <option value="week">{t.thisWeek}</option>
+              <option value="fifteen_days">{t.last15Days}</option>
+              <option value="month">{t.thisMonth}</option>
+              <option value="custom">{t.custom}</option>
             </select>
           </div>
 
@@ -244,26 +246,26 @@ export function Statistics() {
                 type="date"
                 value={customStartDate}
                 onChange={(e) => setCustomStartDate(e.target.value)}
-                placeholder="开始日期"
+                placeholder={t.startDate}
               />
-              <span>至</span>
+              <span>{t.to}</span>
               <input
                 type="date"
                 value={customEndDate}
                 onChange={(e) => setCustomEndDate(e.target.value)}
-                placeholder="结束日期"
+                placeholder={t.endDate}
               />
             </div>
           )}
 
           <div className="group-by-selector">
-            <label>统计方式:</label>
+            <label>{t.statisticsMethod}:</label>
             <select 
               value={groupBy} 
               onChange={(e) => setGroupBy(e.target.value as 'Task' | 'TaskGroup')}
             >
-              <option value="Task">按任务统计</option>
-              <option value="TaskGroup">按任务组统计</option>
+              <option value="Task">{t.byTaskStatistics}</option>
+              <option value="TaskGroup">{t.byTaskGroupStatistics}</option>
             </select>
           </div>
         </div>
@@ -273,7 +275,7 @@ export function Statistics() {
         {loading ? (
           <div className="loading">
             <div className="spinner" />
-            <p>加载中...</p>
+            <p>{t.loading}</p>
           </div>
         ) : (
           <>

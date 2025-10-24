@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Play, Clock } from 'lucide-react';
 import { ApiService } from '../services/api';
 import type { Task, TaskGroup, CreateTaskRequest, UpdateTaskRequest } from '../types';
-import { TIMER_PRESETS } from '../types';
+import { TIMER_PRESETS, getTimerPresets } from '../types';
+import { useLanguage } from '../i18n/LanguageProvider';
 
 interface TaskManagerProps {
   selectedGroup: TaskGroup | null;
@@ -10,6 +11,7 @@ interface TaskManagerProps {
 }
 
 export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
+  const { t, language } = useLanguage();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -21,6 +23,9 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
     useCustomDuration: false,
     isForwardTiming: false,
   });
+
+  // 获取当前语言的预设时间
+  const timerPresets = getTimerPresets(language);
 
   useEffect(() => {
     if (selectedGroup) {
@@ -114,7 +119,7 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('确定要删除这个任务吗？')) return;
+    if (!confirm(t.confirmDelete)) return;
 
     try {
       await ApiService.deleteTask(id);
@@ -157,7 +162,7 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
       <div className="task-manager">
         <div className="empty-state">
           <Clock size={48} />
-          <p>请选择一个任务组</p>
+          <p>{t.selectTaskGroupFirst}</p>
         </div>
       </div>
     );
@@ -166,14 +171,14 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
   return (
     <div className="task-manager">
       <div className="header">
-        <h2>{selectedGroup.name} - 任务</h2>
+        <h2>{selectedGroup.name} - {t.tasks}</h2>
         <button
           className="btn btn-primary"
           onClick={() => setIsCreating(true)}
           disabled={isCreating || editingTask !== null}
         >
           <Plus size={16} />
-          新建任务
+          {t.newTask}
         </button>
       </div>
 
@@ -181,13 +186,13 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
         <div className="form">
           <input
             type="text"
-            placeholder="任务名称"
+            placeholder={t.taskName}
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             className="input"
           />
           <textarea
-            placeholder="描述（可选）"
+            placeholder={`${t.description} ${t.optional}`}
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             className="textarea"
@@ -195,7 +200,7 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
           />
           
           <div className="duration-section">
-            <label>计时方式</label>
+            <label>{t.timerMode}</label>
             <div className="duration-options">
               <label className="radio-label">
                 <input
@@ -204,7 +209,7 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
                   checked={!formData.useCustomDuration && !formData.isForwardTiming}
                   onChange={() => setFormData({ ...formData, useCustomDuration: false, isForwardTiming: false })}
                 />
-                预设时间
+                {t.presetTime}
               </label>
               <label className="radio-label">
                 <input
@@ -213,7 +218,7 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
                   checked={formData.useCustomDuration}
                   onChange={() => setFormData({ ...formData, useCustomDuration: true, isForwardTiming: false })}
                 />
-                自定义时间
+                {t.customTime}
               </label>
               <label className="radio-label">
                 <input
@@ -222,13 +227,13 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
                   checked={formData.isForwardTiming}
                   onChange={() => setFormData({ ...formData, isForwardTiming: true, useCustomDuration: false })}
                 />
-                正向计时
+                {t.forwardTimer}
               </label>
             </div>
 
             {!formData.useCustomDuration && !formData.isForwardTiming && (
               <div className="preset-buttons">
-                {TIMER_PRESETS.map((preset) => (
+                {timerPresets.map((preset) => (
                   <button
                     key={preset.minutes}
                     type="button"
@@ -245,13 +250,13 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
               <div className="custom-duration">
                 <input
                   type="number"
-                  placeholder="分钟"
+                  placeholder={t.minutes}
                   value={formData.customDuration}
                   onChange={(e) => setFormData({ ...formData, customDuration: e.target.value })}
                   className="input"
                   min="1"
                 />
-                <span>分钟</span>
+                <span>{t.minutes}</span>
               </div>
             )}
           </div>
@@ -261,13 +266,13 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
               className="btn btn-primary"
               onClick={editingTask ? handleUpdate : handleCreate}
             >
-              {editingTask ? '更新' : '创建'}
+              {editingTask ? t.update : t.create}
             </button>
             <button
               className="btn btn-secondary"
               onClick={cancelEdit}
             >
-              取消
+              {t.cancel}
             </button>
           </div>
         </div>
@@ -277,7 +282,7 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
         {tasks.length === 0 ? (
           <div className="empty-state">
             <Clock size={48} />
-            <p>还没有任务</p>
+            <p>{t.noTasks}</p>
             <p>点击上方按钮创建第一个任务</p>
           </div>
         ) : (
@@ -290,12 +295,12 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
                   {task.duration_minutes ? (
                     <span className="duration">
                       <Clock size={14} />
-                      {task.duration_minutes}分钟
+                      {task.duration_minutes}{t.minutes}
                     </span>
                   ) : (
                     <span className="duration">
                       <Clock size={14} />
-                      正向计时
+                      {t.forwardTimer}
                     </span>
                   )}
                 </div>
@@ -306,7 +311,7 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
                   onClick={() => onStartTask(task)}
                 >
                   <Play size={16} />
-                  开始
+                  {t.start}
                 </button>
                 <button
                   className="btn btn-icon"

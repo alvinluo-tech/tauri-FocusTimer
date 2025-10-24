@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Settings as SettingsIcon, Palette, Image, RotateCcw } from 'lucide-react';
+import { Settings as SettingsIcon, Palette, Image, RotateCcw, Globe } from 'lucide-react';
 import { AdvancedColorPicker } from './AdvancedColorPicker';
+import { useLanguage } from '../i18n/LanguageProvider';
 
 interface BackgroundSettings {
   running: {
@@ -33,6 +34,7 @@ interface SettingsProps {
 }
 
 export function Settings({ onSettingsChange }: SettingsProps) {
+  const { language, setLanguage, t } = useLanguage();
   const [tempSettings, setTempSettings] = useState<BackgroundSettings>(DEFAULT_BACKGROUNDS);
   const [activeTab, setActiveTab] = useState<'running' | 'paused'>('running');
 
@@ -157,31 +159,53 @@ export function Settings({ onSettingsChange }: SettingsProps) {
       <div className="settings-header">
         <h2>
           <SettingsIcon size={24} />
-          设置
+          {t.settings}
         </h2>
-        <p>自定义计时器背景颜色和图片</p>
+        <p>{t.customizeTimerBackground}</p>
       </div>
 
       <div className="settings-content">
+        {/* 语言选择 */}
+        <div className="language-section">
+          <div className="language-header">
+            <Globe size={20} />
+            <label>语言 / Language</label>
+          </div>
+          <div className="language-options">
+            <button
+              className={`language-option ${language === 'zh' ? 'active' : ''}`}
+              onClick={() => setLanguage('zh')}
+            >
+              中文
+            </button>
+            <button
+              className={`language-option ${language === 'en' ? 'active' : ''}`}
+              onClick={() => setLanguage('en')}
+            >
+              English
+            </button>
+          </div>
+        </div>
+
         {/* 状态选择标签 */}
         <div className="state-tabs">
           <button
             className={`state-tab ${activeTab === 'running' ? 'active' : ''}`}
             onClick={() => setActiveTab('running')}
           >
-            运行中背景
+            {t.runningBackground}
           </button>
           <button
             className={`state-tab ${activeTab === 'paused' ? 'active' : ''}`}
             onClick={() => setActiveTab('paused')}
           >
-            暂停背景
+            {t.pausedBackground}
           </button>
         </div>
 
         {/* 背景预览 */}
         <div className="background-preview">
-          <h3>预览效果</h3>
+          <h3>{t.previewEffect}</h3>
           <div
             className="preview-box"
             style={{
@@ -199,14 +223,14 @@ export function Settings({ onSettingsChange }: SettingsProps) {
             }}
           >
             <div className="preview-text">
-              {activeTab === 'running' ? '运行中' : '暂停中'}
+              {activeTab === 'running' ? t.running : t.paused}
             </div>
           </div>
         </div>
 
         {/* 背景类型选择 */}
         <div className="background-type">
-          <h3>背景类型</h3>
+          <h3>{t.backgroundType}</h3>
           <div className="type-options">
             <label className="type-option">
               <input
@@ -225,7 +249,7 @@ export function Settings({ onSettingsChange }: SettingsProps) {
                 }}
               />
               <Palette size={20} />
-              纯色背景
+              {t.solidColor}
             </label>
             <label className="type-option">
               <input
@@ -244,7 +268,7 @@ export function Settings({ onSettingsChange }: SettingsProps) {
                 }}
               />
               <Image size={20} />
-              图片背景
+              {t.imageBackground}
             </label>
           </div>
         </div>
@@ -255,7 +279,7 @@ export function Settings({ onSettingsChange }: SettingsProps) {
             <AdvancedColorPicker
               value={currentSettings.color}
               onChange={(color) => handleColorChange(activeTab, color)}
-              label="选择颜色"
+              label={t.selectColor}
             />
           </div>
         )}
@@ -263,7 +287,7 @@ export function Settings({ onSettingsChange }: SettingsProps) {
         {/* 图片上传 */}
         {currentSettings.type === 'image' && (
           <div className="image-upload">
-            <h3>上传图片</h3>
+            <h3>{t.uploadImage}</h3>
             <div className="upload-area">
               <input
                 type="file"
@@ -279,7 +303,7 @@ export function Settings({ onSettingsChange }: SettingsProps) {
               />
               <label htmlFor="image-upload" className="upload-button">
                 <Image size={24} />
-                选择图片
+                {t.chooseImage}
               </label>
               {currentSettings.image && (
                 <div className="current-image">
@@ -309,10 +333,10 @@ export function Settings({ onSettingsChange }: SettingsProps) {
         <div className="settings-actions">
           <button className="btn btn-secondary" onClick={resetToDefault}>
             <RotateCcw size={16} />
-            重置为默认
+            {t.resetToDefault}
           </button>
           <button className="btn btn-primary" onClick={applySettings}>
-            保存配置
+            {t.saveConfiguration}
           </button>
         </div>
       </div>

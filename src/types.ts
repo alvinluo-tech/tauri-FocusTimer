@@ -102,6 +102,25 @@ export interface TimerPreset {
   minutes: number;
 }
 
+export const getTimerPresets = (language: 'zh' | 'en'): TimerPreset[] => {
+  if (language === 'en') {
+    return [
+      { label: '25 minutes', minutes: 25 },
+      { label: '30 minutes', minutes: 30 },
+      { label: '45 minutes', minutes: 45 },
+      { label: '1 hour', minutes: 60 },
+    ];
+  }
+  
+  return [
+    { label: '25分钟', minutes: 25 },
+    { label: '30分钟', minutes: 30 },
+    { label: '45分钟', minutes: 45 },
+    { label: '1小时', minutes: 60 },
+  ];
+};
+
+// 保持向后兼容
 export const TIMER_PRESETS: TimerPreset[] = [
   { label: '25分钟', minutes: 25 },
   { label: '30分钟', minutes: 30 },

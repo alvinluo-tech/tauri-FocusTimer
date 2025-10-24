@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, FolderOpen } from 'lucide-react';
 import { ApiService } from '../services/api';
 import type { TaskGroup, CreateTaskGroupRequest, UpdateTaskGroupRequest } from '../types';
+import { useLanguage } from '../i18n/LanguageProvider';
 
 interface TaskGroupManagerProps {
   onSelectGroup: (group: TaskGroup) => void;
@@ -9,6 +10,7 @@ interface TaskGroupManagerProps {
 }
 
 export function TaskGroupManager({ onSelectGroup, selectedGroupId }: TaskGroupManagerProps) {
+  const { t } = useLanguage();
   const [groups, setGroups] = useState<TaskGroup[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [editingGroup, setEditingGroup] = useState<TaskGroup | null>(null);
@@ -89,14 +91,14 @@ export function TaskGroupManager({ onSelectGroup, selectedGroupId }: TaskGroupMa
   return (
     <div className="task-group-manager">
       <div className="header">
-        <h2>任务组</h2>
+        <h2>{t.taskGroups}</h2>
         <button
           className="btn btn-primary"
           onClick={() => setIsCreating(true)}
           disabled={isCreating || editingGroup !== null}
         >
           <Plus size={16} />
-          新建任务组
+          {t.newTaskGroup}
         </button>
       </div>
 
@@ -104,13 +106,13 @@ export function TaskGroupManager({ onSelectGroup, selectedGroupId }: TaskGroupMa
         <div className="form">
           <input
             type="text"
-            placeholder="任务组名称"
+            placeholder={t.taskGroupName}
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             className="input"
           />
           <textarea
-            placeholder="描述（可选）"
+            placeholder={`${t.description} ${t.optional}`}
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             className="textarea"
@@ -121,13 +123,13 @@ export function TaskGroupManager({ onSelectGroup, selectedGroupId }: TaskGroupMa
               className="btn btn-primary"
               onClick={editingGroup ? handleUpdate : handleCreate}
             >
-              {editingGroup ? '更新' : '创建'}
+              {editingGroup ? t.update : t.create}
             </button>
             <button
               className="btn btn-secondary"
               onClick={cancelEdit}
             >
-              取消
+              {t.cancel}
             </button>
           </div>
         </div>
@@ -137,8 +139,8 @@ export function TaskGroupManager({ onSelectGroup, selectedGroupId }: TaskGroupMa
         {groups.length === 0 ? (
           <div className="empty-state">
             <FolderOpen size={48} />
-            <p>还没有任务组</p>
-            <p>点击上方按钮创建第一个任务组</p>
+            <p>{t.noTaskGroups}</p>
+            <p>{t.createFirstTaskGroup}</p>
           </div>
         ) : (
           groups.map((group) => (

@@ -1169,3 +1169,64 @@ body {
     margin-top: 8px;
   }
 }
+
+/* 语言选择样式 */
+.language-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.language-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.language-options {
+  display: flex;
+  gap: 8px;
+}
+
+.language-option {
+  padding: 8px 16px;
+  border: 1px solid #dee2e6;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.language-option:hover {
+  border-color: #7c3aed;
+  background: #f8f9ff;
+}
+
+.language-option.active {
+  background: #7c3aed;
+  color: white;
+  border-color: #7c3aed;
+}
+
+.language-option.active:hover {
+  background: #6d28d9;
+  border-color: #6d28d9;
+}
+
+/* 语言选择响应式设计 */
+@media (max-width: 768px) {
+  .language-options {
+    flex-direction: column;
+  }
+  
+  .language-option {
+    text-align: center;
+  }
+}

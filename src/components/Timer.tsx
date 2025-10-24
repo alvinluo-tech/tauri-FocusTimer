@@ -3,6 +3,7 @@ import { Play, Pause, Square, RotateCcw } from 'lucide-react';
 import { ApiService } from '../services/api';
 import type { ActiveSession, EndSessionRequest } from '../types';
 import { formatTime } from '../utils/helpers';
+import { useLanguage } from '../i18n/LanguageProvider';
 
 interface TimerProps {
   activeSession: ActiveSession | null;
@@ -23,6 +24,7 @@ export function Timer({
   onPause, 
   onReset
 }: TimerProps) {
+  const { t } = useLanguage();
   const [timeLeft, setTimeLeft] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -200,7 +202,7 @@ export function Timer({
       <div className="timer">
         <div className="timer-display">
           <div className="timer-time">00:00</div>
-          <div className="timer-label">选择任务开始计时</div>
+          <div className="timer-label">{t.selectTaskToStart}</div>
         </div>
       </div>
     );
@@ -233,7 +235,7 @@ export function Timer({
       <div className="timer-display">
         <div className="timer-time">{formatTime(displayTime)}</div>
         <div className="timer-label">
-          {isCountdown ? '倒计时' : '正向计时'}
+          {isCountdown ? t.countdown : t.forwardTimer}
         </div>
         
         {isCountdown && (
@@ -253,7 +255,7 @@ export function Timer({
           disabled={!isRunning}
         >
           {isPaused ? <Play size={20} /> : <Pause size={20} />}
-          {isPaused ? '继续' : '暂停'}
+          {isPaused ? t.resume : t.pause}
         </button>
         
         <button
@@ -262,7 +264,7 @@ export function Timer({
           disabled={!isRunning}
         >
           <Square size={20} />
-          停止
+          {t.stop}
         </button>
         
         <button
@@ -271,7 +273,7 @@ export function Timer({
           disabled={!isRunning}
         >
           <RotateCcw size={20} />
-          重置
+          {t.reset}
         </button>
       </div>
 

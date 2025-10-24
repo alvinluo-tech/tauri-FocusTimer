@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Palette, Layers, Eye } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageProvider';
 
 interface ColorPickerProps {
   value: string;
@@ -11,37 +12,6 @@ interface ColorPreset {
   name: string;
   colors: string[];
 }
-
-const COLOR_PRESETS: ColorPreset[] = [
-  {
-    name: '基础色',
-    colors: [
-      '#7c3aed', '#eab308', '#1e40af', '#059669', '#dc2626', '#ea580c',
-      '#0891b2', '#be185d', '#7c2d12', '#166534', '#1e3a8a', '#581c87'
-    ]
-  },
-  {
-    name: '暖色调',
-    colors: [
-      '#fef3c7', '#fde68a', '#f59e0b', '#d97706', '#92400e', '#78350f',
-      '#fecaca', '#fca5a5', '#ef4444', '#dc2626', '#991b1b', '#7f1d1d'
-    ]
-  },
-  {
-    name: '冷色调',
-    colors: [
-      '#dbeafe', '#93c5fd', '#3b82f6', '#1d4ed8', '#1e40af', '#1e3a8a',
-      '#d1fae5', '#a7f3d0', '#10b981', '#059669', '#047857', '#065f46'
-    ]
-  },
-  {
-    name: '中性色',
-    colors: [
-      '#f9fafb', '#f3f4f6', '#e5e7eb', '#d1d5db', '#9ca3af', '#6b7280',
-      '#4b5563', '#374151', '#1f2937', '#111827', '#0f172a', '#020617'
-    ]
-  }
-];
 
 const GRADIENT_PRESETS = [
   'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -59,10 +29,43 @@ const GRADIENT_PRESETS = [
 ];
 
 export function AdvancedColorPicker({ value, onChange, label }: ColorPickerProps) {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'solid' | 'gradient' | 'advanced'>('solid');
   const [opacity, setOpacity] = useState(1);
   const [showOpacity, setShowOpacity] = useState(false);
   const [customColor, setCustomColor] = useState('#7c3aed');
+
+  // 动态颜色预设
+  const COLOR_PRESETS: ColorPreset[] = [
+    {
+      name: t.basicColors,
+      colors: [
+        '#7c3aed', '#eab308', '#1e40af', '#059669', '#dc2626', '#ea580c',
+        '#0891b2', '#be185d', '#7c2d12', '#166534', '#1e3a8a', '#581c87'
+      ]
+    },
+    {
+      name: t.warmColors,
+      colors: [
+        '#fef3c7', '#fde68a', '#f59e0b', '#d97706', '#92400e', '#78350f',
+        '#fecaca', '#fca5a5', '#ef4444', '#dc2626', '#991b1b', '#7f1d1d'
+      ]
+    },
+    {
+      name: t.coolColors,
+      colors: [
+        '#dbeafe', '#93c5fd', '#3b82f6', '#1d4ed8', '#1e40af', '#1e3a8a',
+        '#d1fae5', '#a7f3d0', '#10b981', '#059669', '#047857', '#065f46'
+      ]
+    },
+    {
+      name: t.neutralColors,
+      colors: [
+        '#f9fafb', '#f3f4f6', '#e5e7eb', '#d1d5db', '#9ca3af', '#6b7280',
+        '#4b5563', '#374151', '#1f2937', '#111827', '#0f172a', '#020617'
+      ]
+    }
+  ];
 
   useEffect(() => {
     // 解析当前颜色值
@@ -130,21 +133,21 @@ export function AdvancedColorPicker({ value, onChange, label }: ColorPickerProps
           onClick={() => setActiveTab('solid')}
         >
           <Palette size={16} />
-          纯色
+          {t.solid}
         </button>
         <button
           className={`color-tab ${activeTab === 'gradient' ? 'active' : ''}`}
           onClick={() => setActiveTab('gradient')}
         >
           <Layers size={16} />
-          渐变
+          {t.gradient}
         </button>
         <button
           className={`color-tab ${activeTab === 'advanced' ? 'active' : ''}`}
           onClick={() => setActiveTab('advanced')}
         >
           <Eye size={16} />
-          高级
+          {t.advanced}
         </button>
       </div>
 
@@ -204,7 +207,7 @@ export function AdvancedColorPicker({ value, onChange, label }: ColorPickerProps
                   checked={showOpacity}
                   onChange={(e) => setShowOpacity(e.target.checked)}
                 />
-                启用透明度
+                {t.enableOpacity}
               </label>
             </div>
             {showOpacity && (
@@ -269,7 +272,7 @@ export function AdvancedColorPicker({ value, onChange, label }: ColorPickerProps
           
           <div className="opacity-control">
             <div className="opacity-header">
-              <label>透明度</label>
+              <label>{t.opacity}</label>
             </div>
             <div className="opacity-slider">
               <input
@@ -293,7 +296,7 @@ export function AdvancedColorPicker({ value, onChange, label }: ColorPickerProps
           className="preview-box"
           style={{ background: value }}
         >
-          <span className="preview-text">预览</span>
+          <span className="preview-text">{t.preview}</span>
         </div>
       </div>
     </div>

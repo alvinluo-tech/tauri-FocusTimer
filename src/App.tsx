@@ -8,11 +8,13 @@ import { Settings as SettingsComponent } from './components/Settings';
 import { ApiService } from './services/api';
 import type { TaskGroup, Task, ActiveSession, BackgroundSettings } from './types';
 import { DEFAULT_BACKGROUND_SETTINGS } from './types';
+import { LanguageProvider, useLanguage } from './i18n/LanguageProvider';
 import './App.css';
 
 type Tab = 'tasks' | 'timer' | 'statistics' | 'settings';
 
-function App() {
+function AppMain() {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<Tab>('tasks');
   const [selectedGroup, setSelectedGroup] = useState<TaskGroup | null>(null);
   const [activeSession, setActiveSession] = useState<ActiveSession | null>(null);
@@ -132,14 +134,14 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-content">
-          <h1>FocusTimer</h1>
+          <h1>{t.appTitle}</h1>
           <nav className="nav-tabs">
             <button
               className={`nav-tab ${activeTab === 'tasks' ? 'active' : ''}`}
               onClick={() => setActiveTab('tasks')}
             >
               <Clock size={20} />
-              任务管理
+              {t.tasks}
             </button>
             <button
               className={`nav-tab ${activeTab === 'timer' ? 'active' : ''}`}
@@ -147,7 +149,7 @@ function App() {
               disabled={!activeSession}
             >
               <Clock size={20} />
-              计时器
+              {t.timer}
               {activeSession && <span className="tab-indicator" />}
             </button>
             <button
@@ -155,14 +157,14 @@ function App() {
               onClick={() => setActiveTab('statistics')}
             >
               <BarChart3 size={20} />
-              统计报告
+              {t.statistics}
             </button>
             <button
               className={`nav-tab ${activeTab === 'settings' ? 'active' : ''}`}
               onClick={() => setActiveTab('settings')}
             >
               <Settings size={20} />
-              设置
+              {t.settings}
             </button>
           </nav>
         </div>
@@ -238,6 +240,14 @@ function App() {
         )}
       </main>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppMain />
+    </LanguageProvider>
   );
 }
 
