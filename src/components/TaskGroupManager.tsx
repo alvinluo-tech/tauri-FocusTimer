@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, FolderOpen } from '-react';
+import { Plus, Edit2, Trash2, FolderOpen } from 'lucide-react';
 import { ApiService } from '../services/api';
 import type { TaskGroup, CreateTaskGroupRequest, UpdateTaskGroupRequest } from '../types';
 
