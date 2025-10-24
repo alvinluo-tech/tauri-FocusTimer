@@ -21,7 +21,7 @@ export function Timer({
   pauseStartTime, 
   totalPausedTime, 
   onPause, 
-  onReset 
+  onReset
 }: TimerProps) {
   const [timeLeft, setTimeLeft] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);

@@ -110,3 +110,30 @@ export const TIMER_PRESETS: TimerPreset[] = [
 ];
 
 export type StatisticsPeriod = 'today' | 'week' | 'fifteen_days' | 'month' | 'custom';
+
+// 设置相关类型
+export interface BackgroundSettings {
+  running: {
+    type: 'color' | 'image';
+    color: string;
+    image: string | null;
+  };
+  paused: {
+    type: 'color' | 'image';
+    color: string;
+    image: string | null;
+  };
+}
+
+export const DEFAULT_BACKGROUND_SETTINGS: BackgroundSettings = {
+  running: {
+    type: 'color',
+    color: '#7c3aed', // 紫色
+    image: null,
+  },
+  paused: {
+    type: 'color',
+    color: '#eab308', // 黄色
+    image: null,
+  },
+};

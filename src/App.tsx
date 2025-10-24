@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Clock, BarChart3 } from 'lucide-react';
+import { Clock, BarChart3, Settings } from 'lucide-react';
 import { TaskGroupManager } from './components/TaskGroupManager';
 import { TaskManager } from './components/TaskManager';
 import { Timer } from './components/Timer';
 import { Statistics } from './components/Statistics';
+import { Settings as SettingsComponent } from './components/Settings';
 import { ApiService } from './services/api';
-import type { TaskGroup, Task, ActiveSession } from './types';
+import type { TaskGroup, Task, ActiveSession, BackgroundSettings } from './types';
+import { DEFAULT_BACKGROUND_SETTINGS } from './types';
 import './App.css';
 
-type Tab = 'tasks' | 'timer' | 'statistics';
+type Tab = 'tasks' | 'timer' | 'statistics' | 'settings';
 
 function App() {
   const [activeTab, setActiveTab] = useState<Tab>('tasks');
@@ -17,10 +19,28 @@ function App() {
   const [isPaused, setIsPaused] = useState(false);
   const [pauseStartTime, setPauseStartTime] = useState<number | null>(null);
   const [totalPausedTime, setTotalPausedTime] = useState(0);
+  const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(DEFAULT_BACKGROUND_SETTINGS);
 
   useEffect(() => {
     loadActiveSession();
+    loadBackgroundSettings();
   }, []);
+
+  const loadBackgroundSettings = () => {
+    try {
+      const saved = localStorage.getItem('timer-background-settings');
+      if (saved) {
+        const parsedSettings = JSON.parse(saved);
+        setBackgroundSettings({ ...DEFAULT_BACKGROUND_SETTINGS, ...parsedSettings });
+      }
+    } catch (error) {
+      console.error('Failed to load background settings:', error);
+    }
+  };
+
+  const handleSettingsChange = (newSettings: BackgroundSettings) => {
+    setBackgroundSettings(newSettings);
+  };
 
   const loadActiveSession = async () => {
     try {
@@ -137,6 +157,13 @@ function App() {
               <BarChart3 size={20} />
               统计报告
             </button>
+            <button
+              className={`nav-tab ${activeTab === 'settings' ? 'active' : ''}`}
+              onClick={() => setActiveTab('settings')}
+            >
+              <Settings size={20} />
+              设置
+            </button>
           </nav>
         </div>
       </header>
@@ -160,7 +187,19 @@ function App() {
         )}
 
         {activeTab === 'timer' && (
-          <div className={`timer-view ${isPaused ? 'bg-paused' : ''}`}>
+          <div 
+            className={`timer-view ${isPaused ? 'bg-paused' : ''}`}
+            style={{
+              backgroundColor: isPaused 
+                ? (backgroundSettings.paused.type === 'color' ? backgroundSettings.paused.color : undefined)
+                : (backgroundSettings.running.type === 'color' ? backgroundSettings.running.color : undefined),
+              backgroundImage: isPaused 
+                ? (backgroundSettings.paused.type === 'image' ? `url(${backgroundSettings.paused.image})` : undefined)
+                : (backgroundSettings.running.type === 'image' ? `url(${backgroundSettings.running.image})` : undefined),
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
             <Timer
               activeSession={activeSession}
               onSessionEnd={handleSessionEnd}
@@ -176,6 +215,12 @@ function App() {
         {activeTab === 'statistics' && (
           <div className="statistics-view">
             <Statistics />
+          </div>
+        )}
+
+        {activeTab === 'settings' && (
+          <div className="settings-view">
+            <SettingsComponent onSettingsChange={handleSettingsChange} />
           </div>
         )}
       </main>
