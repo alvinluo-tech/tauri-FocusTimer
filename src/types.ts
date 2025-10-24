@@ -115,12 +115,12 @@ export type StatisticsPeriod = 'today' | 'week' | 'fifteen_days' | 'month' | 'cu
 export interface BackgroundSettings {
   running: {
     type: 'color' | 'image';
-    color: string;
+    color: string; // 支持纯色、渐变、rgba等格式
     image: string | null;
   };
   paused: {
     type: 'color' | 'image';
-    color: string;
+    color: string; // 支持纯色、渐变、rgba等格式
     image: string | null;
   };
 }

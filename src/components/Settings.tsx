@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Settings as SettingsIcon, Palette, Image, RotateCcw } from 'lucide-react';
+import { AdvancedColorPicker } from './AdvancedColorPicker';
 
 interface BackgroundSettings {
   running: {
@@ -184,10 +185,17 @@ export function Settings({ onSettingsChange }: SettingsProps) {
           <div
             className="preview-box"
             style={{
-              backgroundColor: currentSettings.type === 'color' ? currentSettings.color : undefined,
-              backgroundImage: currentSettings.type === 'image' ? `url(${currentSettings.image})` : undefined,
+              backgroundColor: currentSettings.type === 'color' && !currentSettings.color.startsWith('linear-gradient')
+                ? currentSettings.color 
+                : undefined,
+              backgroundImage: currentSettings.type === 'color' && currentSettings.color.startsWith('linear-gradient')
+                ? currentSettings.color 
+                : currentSettings.type === 'image' 
+                  ? `url(${currentSettings.image})` 
+                  : undefined,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
             }}
           >
             <div className="preview-text">
@@ -244,53 +252,11 @@ export function Settings({ onSettingsChange }: SettingsProps) {
         {/* 颜色选择器 */}
         {currentSettings.type === 'color' && (
           <div className="color-picker">
-            <h3>选择颜色</h3>
-            <div className="color-options">
-              <input
-                type="color"
-                value={currentSettings.color}
-                onChange={(e) => handleColorChange(activeTab, e.target.value)}
-                className="color-input"
-              />
-              <div className="preset-colors">
-                <div
-                  className="preset-color"
-                  style={{ backgroundColor: '#7c3aed' }}
-                  onClick={() => handleColorChange(activeTab, '#7c3aed')}
-                  title="紫色"
-                />
-                <div
-                  className="preset-color"
-                  style={{ backgroundColor: '#eab308' }}
-                  onClick={() => handleColorChange(activeTab, '#eab308')}
-                  title="黄色"
-                />
-                <div
-                  className="preset-color"
-                  style={{ backgroundColor: '#1e40af' }}
-                  onClick={() => handleColorChange(activeTab, '#1e40af')}
-                  title="蓝色"
-                />
-                <div
-                  className="preset-color"
-                  style={{ backgroundColor: '#059669' }}
-                  onClick={() => handleColorChange(activeTab, '#059669')}
-                  title="绿色"
-                />
-                <div
-                  className="preset-color"
-                  style={{ backgroundColor: '#dc2626' }}
-                  onClick={() => handleColorChange(activeTab, '#dc2626')}
-                  title="红色"
-                />
-                <div
-                  className="preset-color"
-                  style={{ backgroundColor: '#ea580c' }}
-                  onClick={() => handleColorChange(activeTab, '#ea580c')}
-                  title="橙色"
-                />
-              </div>
-            </div>
+            <AdvancedColorPicker
+              value={currentSettings.color}
+              onChange={(color) => handleColorChange(activeTab, color)}
+              label="选择颜色"
+            />
           </div>
         )}
 

@@ -191,13 +191,26 @@ function App() {
             className={`timer-view ${isPaused ? 'bg-paused' : ''}`}
             style={{
               backgroundColor: isPaused 
-                ? (backgroundSettings.paused.type === 'color' ? backgroundSettings.paused.color : undefined)
-                : (backgroundSettings.running.type === 'color' ? backgroundSettings.running.color : undefined),
+                ? (backgroundSettings.paused.type === 'color' && !backgroundSettings.paused.color.startsWith('linear-gradient')
+                    ? backgroundSettings.paused.color 
+                    : undefined)
+                : (backgroundSettings.running.type === 'color' && !backgroundSettings.running.color.startsWith('linear-gradient')
+                    ? backgroundSettings.running.color 
+                    : undefined),
               backgroundImage: isPaused 
-                ? (backgroundSettings.paused.type === 'image' ? `url(${backgroundSettings.paused.image})` : undefined)
-                : (backgroundSettings.running.type === 'image' ? `url(${backgroundSettings.running.image})` : undefined),
+                ? (backgroundSettings.paused.type === 'color' && backgroundSettings.paused.color.startsWith('linear-gradient')
+                    ? backgroundSettings.paused.color 
+                    : backgroundSettings.paused.type === 'image' 
+                      ? `url(${backgroundSettings.paused.image})` 
+                      : undefined)
+                : (backgroundSettings.running.type === 'color' && backgroundSettings.running.color.startsWith('linear-gradient')
+                    ? backgroundSettings.running.color 
+                    : backgroundSettings.running.type === 'image' 
+                      ? `url(${backgroundSettings.running.image})` 
+                      : undefined),
               backgroundSize: 'cover',
               backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
             }}
           >
             <Timer
