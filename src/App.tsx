@@ -112,7 +112,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-content">
-          <h1>任务计时器</h1>
+          <h1>FocusTimer</h1>
           <nav className="nav-tabs">
             <button
               className={`nav-tab ${activeTab === 'tasks' ? 'active' : ''}`}

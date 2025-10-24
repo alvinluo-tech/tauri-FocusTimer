@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "xiaoluo's todolist",
+  "productName": "FocusTimer",
   "version": "0.3.0",
-  "identifier": "com.alvinluo.tauri-todolist",
+  "identifier": "com.alvinluo.focustimer",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "xiaoluo's todolist",
+        "title": "FocusTimer",
         "width": 800,
         "height": 600
       }

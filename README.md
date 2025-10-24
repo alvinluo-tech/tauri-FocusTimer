@@ -1,6 +1,6 @@
-# 任务计时器 (Tauri TodoList)
+# FocusTimer (专注计时器)
 
-一个基于 Tauri + React + TypeScript + Rust 开发的桌面任务计时器应用。
+一个基于 Tauri + React + TypeScript + Rust 开发的桌面专注计时应用。
 
 ## 功能特性
 
