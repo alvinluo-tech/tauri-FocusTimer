@@ -80,12 +80,18 @@ npm run tauri build
 
 ## 📖 Usage Guide / 使用说明
 
-### 1. Create Task Groups / 创建任务组
+> 📚 **Detailed Usage Guide**: For comprehensive usage instructions, screenshots, and troubleshooting, please refer to the [USAGE.md](USAGE.md) file.
+> 
+> 📚 **详细使用说明**: 如需查看完整的使用说明、截图和故障排除，请参考 [USAGE.md](USAGE.md) 文件。
+
+### Quick Start / 快速开始
+
+#### 1. Create Task Groups / 创建任务组
 - Click the "New Task Group" button / 点击"新建任务组"按钮
 - Enter task group name and description / 输入任务组名称和描述
 - Example: Create "English Learning" task group / 例如：创建"英语学习"任务组
 
-### 2. Add Tasks / 添加任务
+#### 2. Add Tasks / 添加任务
 - Select a task group / 选择任务组
 - Click "New Task" button / 点击"新建任务"按钮
 - Set task name, description, and timing mode / 设置任务名称、描述和计时方式：
@@ -93,16 +99,33 @@ npm run tauri build
   - **Custom Time**: Enter any number of minutes / **自定义时间**: 输入任意分钟数
   - **Forward Timer**: No time limit, records actual time spent / **正向计时**: 无时间限制，记录实际用时
 
-### 3. Start Timing / 开始计时
+#### 3. Start Timing / 开始计时
 - Click "Start" button in the task list / 在任务列表中点击"开始"按钮
 - Automatically switches to timer interface / 自动切换到计时器界面
 - Use control buttons to manage timing process / 使用控制按钮管理计时过程
 
-### 4. View Statistics / 查看统计
+#### 4. View Statistics / 查看统计
 - Switch to "Statistics" tab / 切换到"统计报告"标签
 - Select time period (today, this week, last 15 days, this month, or custom) / 选择统计周期（今天、本周、近15天、本月或自定义）
 - Choose grouping method (by task or by task group) / 选择统计方式（按任务或按任务组）
 - View detailed learning/work time statistics / 查看详细的学习/工作时间统计
+
+### Advanced Features / 高级功能
+
+#### 🎨 Background Customization / 背景自定义
+- Customize timer background colors and images / 自定义计时器背景颜色和图片
+- Support for solid colors, gradients, and image uploads / 支持纯色、渐变和图片上传
+- Different backgrounds for running and paused states / 运行和暂停状态的不同背景
+
+#### 🌍 Multilingual Support / 多语言支持
+- Switch between Chinese and English interfaces / 在中英文界面之间切换
+- All UI elements support both languages / 所有UI元素都支持双语
+- Language preference saved automatically / 语言偏好自动保存
+
+#### ⚙️ Settings & Configuration / 设置和配置
+- Access settings through the Settings tab / 通过设置标签访问设置
+- Customize timer appearance and behavior / 自定义计时器外观和行为
+- Manage language preferences / 管理语言偏好
 
 ## 🗄️ Database Structure / 数据库结构
 
@@ -155,9 +178,31 @@ src/
 
 ## 📸 Screenshots / 截图
 
-*Screenshots would be added here to showcase the application interface*
+> 📷 **Project Screenshots**: View detailed application screenshots in the [screenshots/](screenshots/) directory and [USAGE.md](USAGE.md) file.
+> 
+> 📷 **项目截图**: 在 [screenshots/](screenshots/) 目录和 [USAGE.md](USAGE.md) 文件中查看详细的应用程序截图。
 
-*截图将在此处展示应用程序界面*
+### Available Screenshots / 可用截图
+
+- **Main Interface** / **主界面**: Task group and task management features
+- **Timer Interface** / **计时器界面**: Countdown and forward timing modes
+- **Timer Paused Interface** / **计时器暂停界面**: Paused state with custom background
+- **Statistics Report** / **统计报告**: Detailed time analysis and metrics
+- **Settings Interface** / **设置界面**: Background customization and language settings
+- **Language Setting** / **语言设置**: Multilingual support demonstration
+
+### Current Screenshots / 当前截图
+
+The following screenshots are currently available in the `screenshots/` directory:
+
+以下截图目前在 `screenshots/` 目录中可用：
+
+- `main-interface.png` - Main application interface
+- `timer.png` - Timer interface in running state
+- `timer-paused.png` - Timer interface in paused state
+- `statistics-report.png` - Statistics and analytics view
+- `settings-interface.png` - Settings and customization panel
+- `language-setting.png` - Language selection interface
 
 ## 🤝 Contributing / 贡献
 

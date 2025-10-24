@@ -1,10 +1,18 @@
 import { format, startOfDay, endOfDay, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 
-export function formatDuration(minutes: number): string {
+export function formatDuration(minutes: number, language: 'zh' | 'en' = 'zh'): string {
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
   
+  if (language === 'en') {
+    if (hours > 0) {
+      return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+    }
+    return `${mins}m`;
+  }
+  
+  // Chinese (default)
   if (hours > 0) {
     return mins > 0 ? `${hours}小时${mins}分钟` : `${hours}小时`;
   }

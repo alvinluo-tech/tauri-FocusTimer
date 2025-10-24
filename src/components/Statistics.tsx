@@ -6,7 +6,7 @@ import { formatDuration, getDateRange, formatDate, calculateCompletionRate } fro
 import { useLanguage } from '../i18n/LanguageProvider';
 
 export function Statistics() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [statistics, setStatistics] = useState<StatisticsResponse | null>(null);
   const [period, setPeriod] = useState<StatisticsPeriod>('today');
   const [groupBy, setGroupBy] = useState<'Task' | 'TaskGroup'>('Task');
@@ -150,7 +150,7 @@ export function Statistics() {
             <div className="stat-metrics">
               <div className="metric">
                 <Clock size={16} />
-                <span>{t.totalDuration}: {formatDuration(stat.total_duration_minutes)}</span>
+                <span>{t.totalDuration}: {formatDuration(stat.total_duration_minutes, language)}</span>
               </div>
               <div className="metric">
                 <BarChart3 size={16} />
@@ -193,7 +193,7 @@ export function Statistics() {
             <div className="stat-metrics">
               <div className="metric">
                 <Clock size={16} />
-                <span>{t.totalDuration}: {formatDuration(stat.total_duration_minutes)}</span>
+                <span>{t.totalDuration}: {formatDuration(stat.total_duration_minutes, language)}</span>
               </div>
               <div className="metric">
                 <BarChart3 size={16} />
