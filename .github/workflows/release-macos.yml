@@ -1,0 +1,44 @@
+name: Build-macOS-dmg
+
+on:
+  workflow_dispatch:          # 手动触发
+  push:
+    tags: [ 'v*' ]            # 打 tag 自动触发
+
+jobs:
+  build-mac:
+    runs-on: macos-latest     # 官方免费 macOS runner
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node@20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Install frontend deps
+        run: npm ci
+
+      - name: Build front & Tauri
+        run: npm run build              # 生成 dist
+        # 下一行真正打包 .app + .dmg
+      - name: Tauri build
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}   # v1.0.0
+          releaseName: 'FocusTimer ${{ github.ref_name }}'
+          releaseBody: 'FocusTimer dmg for macOS.'
+          releaseDraft: false
+          prerelease: false

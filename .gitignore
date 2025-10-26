@@ -49,4 +49,4 @@ coverage/
 
 # Optional: large artifacts
 dist-electron/
-release/
+release/    
