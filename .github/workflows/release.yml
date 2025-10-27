@@ -26,7 +26,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: 'App ${{ github.ref_name }}'
+          releaseName: 'FocusTimer ${{ github.ref_name }}'
           releaseBody: 'Auto-generated dmg for macOS.'
           releaseDraft: false
           prerelease: false
@@ -51,7 +51,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: 'App ${{ github.ref_name }}'
+          releaseName: 'FocusTimer ${{ github.ref_name }}'
           releaseBody: 'Auto-generated Windows installer.'
           releaseDraft: false
           prerelease: false
