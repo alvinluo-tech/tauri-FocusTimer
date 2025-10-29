@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/alvinluo-tech/tauri-FocusTimer/compare/v1.0.0...v1.0.1) (2025-10-29)
+
+
+### Bug Fixes
+
+* **timer:** end previous session on start; reset pause state on switch ([bf7c31e](https://github.com/alvinluo-tech/tauri-FocusTimer/commit/bf7c31ec0aa27ff51e1dcc199847e69844bbcaaf))
+
 ## [1.0.0](https://github.com/alvinluo-tech/tauri-FocusTimer/compare/v1.3.0...v1.0.0) (2025-10-29)
 
 
