@@ -58,4 +58,3 @@ jobs:
           releaseDraft: false
           prerelease: false
 
-这个可以直接替换我原来的yml文件是吧
