@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://github.com/alvinluo-tech/tauri-FocusTimer/compare/v1.2.0...v1.3.0) (2025-10-29)
+
+
+### Features
+
+* initial release with macOS & Windows installer support ([5d8fb0f](https://github.com/alvinluo-tech/tauri-FocusTimer/commit/5d8fb0f64febe589fb23b5e1a508df227a26a928))
+
 ## [1.2.0](https://github.com/alvinluo-tech/tauri-FocusTimer/compare/v1.1.0...v1.2.0) (2025-10-29)
 
 
