@@ -17,22 +17,14 @@ jobs:
       release_id: ${{ steps.release.outputs.release_id }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
+      - uses: actions/checkout@v4
       - uses: google-github-actions/release-please-action@v4
         id: release
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: .
           release-type: simple
-          initial-version: 1.0.0
-          changelog-path: CHANGELOG.md
-          release-name: "FocusTimer v${version}"
-
-          changelog-types: |
-            [{"type":"feat","section":"✨ Features","hidden":false},
-            {"type":"fix","section":"🐛 Bug Fixes","hidden":false},
-            {"type":"docs","section":"📚 Documentation","hidden":false},
-            {"type":"style","section":"💄 Styles","hidden":false},
-            {"type":"refactor","section":"♻️ Code Refactoring","hidden":false},
-            {"type":"perf","section":"⚡ Performance","hidden":false},
-            {"type":"test","section":"✅ Tests","hidden":false}]
+          config-file: .release-please-config.json
 
   build-multi:
     needs: release
