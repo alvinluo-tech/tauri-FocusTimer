@@ -22,8 +22,9 @@ jobs:
         with:
           release-type: simple
           initial-version: 1.0.0
-          release-name: "FocusTimer v${version}"
           changelog-path: CHANGELOG.md
+          release-name: "FocusTimer v${version}"
+
           changelog-types: |
             [{"type":"feat","section":"✨ Features","hidden":false},
             {"type":"fix","section":"🐛 Bug Fixes","hidden":false},
