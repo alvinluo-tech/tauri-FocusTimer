@@ -52,9 +52,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ needs.release.outputs.tag_name }}  # 由 release-please 生成的 tag
-          releaseName: 'FocusTimer ${{ needs.release.outputs.tag_name }}'
-          # releaseBody 留空 = 用 release-please 已写好的说明
-          releaseDraft: false
-          prerelease: false
-
+          releaseId: ${{ needs.release.outputs.release_id }}
