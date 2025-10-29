@@ -1,14 +1,41 @@
-name: Build-macOS-dmg-Windows
+name: release-please
 
 on:
-  workflow_dispatch:
   push:
-    tags: [ 'v*' ]
+    branches: [main]          # 监听主干即可
+  workflow_dispatch:          # 手动按钮备用
+
+permissions:
+  contents: write             # 写 Release、打 tag
+  pull-requests: write        # 开 PR
 
 jobs:
-  # ---------- macOS ----------
-  build-mac:
-    runs-on: macos-latest
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          release-type: simple            # 非 npm 项目
+          changelog-path: CHANGELOG.md
+          # 下面三段 = 自动生成哪些小节
+          changelog-types: |
+            [{"type":"feat","section":"✨ Features","hidden":false},
+             {"type":"fix","section":"🐛 Bug Fixes","hidden":false},
+             {"type":"docs","section":"📚 Documentation","hidden":false},
+             {"type":"style","section":"💄 Styles","hidden":false},
+             {"type":"refactor","section":"♻️ Code Refactoring","hidden":false},
+             {"type":"perf","section":"⚡ Performance","hidden":false},
+             {"type":"test","section":"✅ Tests","hidden":false}]
+
+  # ===== 以下是你已有双平台 job，仅加一行判断：release-please 打 tag 时才跑 =====
+  build-multi:
+    needs: release
+    if: ${{ needs.release.outputs.release_created }}   # 👈 只有生成了新版本才构建
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,33 +52,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: 'FocusTimer ${{ github.ref_name }}'
-          releaseBody: 'Auto-generated dmg for macOS.'
+          tagName: ${{ needs.release.outputs.tag_name }}  # 由 release-please 生成的 tag
+          releaseName: 'FocusTimer ${{ needs.release.outputs.tag_name }}'
+          # releaseBody 留空 = 用 release-please 已写好的说明
           releaseDraft: false
           prerelease: false
 
-  # ---------- Windows ----------
-  build-win:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: swatinem/rust-cache@v2
-        with:
-          workspaces: './src-tauri -> target'
-      - run: npm ci
-      - run: npm run build
-      - uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tagName: ${{ github.ref_name }}
-          releaseName: 'FocusTimer ${{ github.ref_name }}'
-          releaseBody: 'Auto-generated Windows installer.'
-          releaseDraft: false
-          prerelease: false
+这个可以直接替换我原来的yml文件是吧
