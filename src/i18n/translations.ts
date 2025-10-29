@@ -23,6 +23,7 @@ export interface Translations {
   confirmDelete: string;
   noTaskGroups: string;
   createFirstTaskGroup: string;
+  createFirstTask: string;
   
   // Tasks
   newTask: string;
@@ -132,6 +133,7 @@ export const translations: Record<Language, Translations> = {
     confirmDelete: '确定要删除这个任务组吗？这将删除组内的所有任务。',
     noTaskGroups: '还没有任务组',
     createFirstTaskGroup: '点击上方按钮创建第一个任务组',
+    createFirstTask: '点击上方按钮创建第一个任务',
     
     // Tasks
     newTask: '新建任务',
@@ -240,6 +242,7 @@ export const translations: Record<Language, Translations> = {
     confirmDelete: 'Are you sure you want to delete this task group? This will delete all tasks in the group.',
     noTaskGroups: 'No task groups yet',
     createFirstTaskGroup: 'Click the button above to create your first task group',
+    createFirstTask: 'Click the button above to create your first task',
     
     // Tasks
     newTask: 'New Task',

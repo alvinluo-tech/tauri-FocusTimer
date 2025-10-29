@@ -63,6 +63,28 @@ function AppMain() {
   const handleStartTask = async (task: Task) => {
     console.log('Starting task:', task);
     try {
+      // If there is an active session and it's not the same task, end it first
+      if (activeSession) {
+        if (activeSession.task.id === task.id) {
+          // Same task: just ensure timer tab and clear pause state
+          setIsPaused(false);
+          setPauseStartTime(null);
+          setTotalPausedTime(0);
+          setActiveTab('timer');
+          return;
+        }
+        try {
+          await ApiService.endSession({ session_id: activeSession.session.id });
+        } catch (endErr) {
+          console.warn('Failed to end previous session, continuing to start new one:', endErr);
+        }
+      }
+
+      // Reset pause state before starting a new session to avoid carry-over
+      setIsPaused(false);
+      setPauseStartTime(null);
+      setTotalPausedTime(0);
+
       const session = await ApiService.startSession({ task_id: task.id });
       console.log('Session started:', session);
       await loadActiveSession();
@@ -88,6 +110,13 @@ function AppMain() {
     await loadActiveSession();
     console.log('Session end handling completed');
   };
+
+  // When the active session changes, clear any stale pause state to avoid leaking timing across tasks
+  useEffect(() => {
+    setIsPaused(false);
+    setPauseStartTime(null);
+    setTotalPausedTime(0);
+  }, [activeSession?.session.id]);
 
   const handlePause = () => {
     if (isPaused) {

@@ -283,7 +283,7 @@ export function TaskManager({ selectedGroup, onStartTask }: TaskManagerProps) {
           <div className="empty-state">
             <Clock size={48} />
             <p>{t.noTasks}</p>
-            <p>点击上方按钮创建第一个任务</p>
+            <p>{t.createFirstTask}</p>
           </div>
         ) : (
           tasks.map((task) => (
