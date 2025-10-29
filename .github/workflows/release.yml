@@ -2,36 +2,38 @@ name: release-please
 
 on:
   push:
-    branches: [main]          # 监听主干即可
-  workflow_dispatch:          # 手动按钮备用
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
-  contents: write             # 写 Release、打 tag
-  pull-requests: write        # 开 PR
+  contents: write
+  pull-requests: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      release_id: ${{ steps.release.outputs.release_id }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: google-github-actions/release-please-action@v4
         id: release
         with:
-          release-type: simple            # 非 npm 项目
+          release-type: simple
           changelog-path: CHANGELOG.md
-          # 下面三段 = 自动生成哪些小节
           changelog-types: |
             [{"type":"feat","section":"✨ Features","hidden":false},
-             {"type":"fix","section":"🐛 Bug Fixes","hidden":false},
-             {"type":"docs","section":"📚 Documentation","hidden":false},
-             {"type":"style","section":"💄 Styles","hidden":false},
-             {"type":"refactor","section":"♻️ Code Refactoring","hidden":false},
-             {"type":"perf","section":"⚡ Performance","hidden":false},
-             {"type":"test","section":"✅ Tests","hidden":false}]
+            {"type":"fix","section":"🐛 Bug Fixes","hidden":false},
+            {"type":"docs","section":"📚 Documentation","hidden":false},
+            {"type":"style","section":"💄 Styles","hidden":false},
+            {"type":"refactor","section":"♻️ Code Refactoring","hidden":false},
+            {"type":"perf","section":"⚡ Performance","hidden":false},
+            {"type":"test","section":"✅ Tests","hidden":false}]
 
-  # ===== 以下是你已有双平台 job，仅加一行判断：release-please 打 tag 时才跑 =====
   build-multi:
     needs: release
-    if: ${{ needs.release.outputs.release_created }}   # 👈 只有生成了新版本才构建
+    if: ${{ needs.release.outputs.release_created == 'true' }}
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
@@ -53,3 +55,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseId: ${{ needs.release.outputs.release_id }}
+          tagName: ${{ needs.release.outputs.tag_name }}
