@@ -1,5 +1,6 @@
 {
   "name": "tauri-FocusTimer",
   "version": "1.0.0",
-  "repository": "https://github.com/alvinluo-tech/tauri-FocusTimer"
+  "repository": "https://github.com/alvinluo-tech/tauri-FocusTimer",
+  ".": "1.4.0"
 }
