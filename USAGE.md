@@ -78,11 +78,22 @@
 - **统计方式**:
   - 按任务统计: 显示每个任务的详细数据
   - 按任务组统计: 显示每个任务组的汇总数据
+- **📊 视图模式**（新功能）:
+  - **图表视图**: 交互式饼图展示时长占比
+    - 鼠标悬停查看详细信息（任务名、任务组、专注时长）
+    - 百分比标签直观显示占比
+    - 彩色扇形区分不同任务
+    - 底部图例显示任务名称和时长
+  - **列表视图**: 详细的统计指标列表
 - **统计指标**:
   - 总时长
   - 会话数
   - 完成率
   - 任务数（任务组统计）
+- **交互功能**:
+  - 点击"图表视图"/"列表视图"按钮切换展示方式
+  - 支持按任务或按任务组的饼图可视化
+  - 数据自动根据选择的时间周期更新
 
 #### English
 - **Statistics Period**:
@@ -94,11 +105,22 @@
 - **Statistics Method**:
   - By Task Statistics: Shows detailed data for each task
   - By Task Group Statistics: Shows summary data for each task group
+- **📊 View Modes** (NEW Feature):
+  - **Chart View**: Interactive pie chart showing time distribution
+    - Hover to see details (task name, task group, focus duration)
+    - Percentage labels show proportion intuitively
+    - Colorful segments distinguish different tasks
+    - Bottom legend displays task names and durations
+  - **List View**: Detailed statistics metrics list
 - **Statistics Metrics**:
   - Total Duration
   - Sessions
   - Completion Rate
   - Task Count (Task Group Statistics)
+- **Interactive Features**:
+  - Click "Chart View"/"List View" buttons to switch display modes
+  - Support pie chart visualization by task or by task group
+  - Data automatically updates based on selected time period
 
 ### 设置功能 / Settings Features
 
@@ -126,6 +148,8 @@
 3. **项目跟踪**: 使用正向计时记录项目实际用时
 4. **习惯养成**: 定期查看统计报告，了解时间分配情况
 5. **多语言使用**: 在设置中切换语言，支持中英文界面
+6. **📊 数据可视化**: 使用饼图查看时间分布，快速识别主要时间消耗任务
+7. **对比分析**: 切换不同统计周期，对比不同时段的时间分配变化
 
 ### English
 1. **Pomodoro Technique**: Use 25-minute countdown for focused work
@@ -133,6 +157,8 @@
 3. **Project Tracking**: Use forward timer to record actual project time
 4. **Habit Building**: Regularly check statistics reports to understand time allocation
 5. **Multilingual Usage**: Switch languages in settings, supports Chinese and English interfaces
+6. **📊 Data Visualization**: Use pie charts to view time distribution and quickly identify major time-consuming tasks
+7. **Comparative Analysis**: Switch between different statistics periods to compare time allocation changes
 
 ## 项目演示 / Project Screenshots
 
@@ -151,6 +177,10 @@
 ### 统计报告 / Statistics Report
 ![Statistics Report](./screenshots/statistics-report.png)
 *统计报告提供详细的时间分析 / Statistics report providing detailed time analysis*
+
+### 统计图表视图 / Statistics Chart View (NEW)
+![Statistics Chart View](./screenshots/statistics-chart.png)
+*饼图可视化展示时长分布，交互式查看详细信息 / Pie chart visualization showing time distribution with interactive details*
 
 ### 设置界面 / Settings Interface
 ![Settings Interface](./screenshots/settings-interface.png)
@@ -231,6 +261,7 @@
 - **后端**: Rust + Tauri
 - **数据库**: SQLite
 - **UI组件**: Lucide React 图标
+- **数据可视化**: Recharts 图表库
 - **样式**: CSS3 + 响应式设计
 
 ### English
@@ -238,4 +269,5 @@
 - **Backend**: Rust + Tauri
 - **Database**: SQLite
 - **UI Components**: Lucide React icons
+- **Data Visualization**: Recharts chart library
 - **Styling**: CSS3 + Responsive design

@@ -35,11 +35,15 @@ A modern desktop focus timer application built with Tauri + React + TypeScript +
 - **Multi-dimensional Analysis**: Statistics by task or by task group
 - **Detailed Metrics**: Total duration, session count, completion rate
 - **Visual Display**: Progress bars showing completion rates
+- **📈 Pie Chart Visualization**: Interactive pie charts showing time distribution across tasks
+- **Dual View Modes**: Switch between chart view and list view for different perspectives
 
 - **多周期统计**: 今天、本周、近15天、本月、自定义时间范围
 - **多维度分析**: 按任务统计或按任务组统计
 - **详细指标**: 总时长、会话数、完成率等
 - **可视化展示**: 进度条显示完成率
+- **📈 饼图可视化**: 交互式饼图展示各任务时长占比
+- **双视图模式**: 可在图表视图和列表视图之间切换
 
 ## 🛠️ Tech Stack / 技术栈
 
@@ -47,12 +51,14 @@ A modern desktop focus timer application built with Tauri + React + TypeScript +
 - **Backend**: Rust + Tauri 2
 - **Database**: SQLite + SQLx
 - **UI Components**: Lucide React icons
+- **Data Visualization**: Recharts
 - **Date Processing**: date-fns
 
 - **前端**: React 19 + TypeScript + Vite
 - **后端**: Rust + Tauri 2
 - **数据库**: SQLite + SQLx
 - **UI组件**: Lucide React 图标
+- **数据可视化**: Recharts
 - **日期处理**: date-fns
 
 ## 📋 Prerequisites / 开发环境要求
@@ -108,6 +114,10 @@ npm run tauri build
 - Switch to "Statistics" tab / 切换到"统计报告"标签
 - Select time period (today, this week, last 15 days, this month, or custom) / 选择统计周期（今天、本周、近15天、本月或自定义）
 - Choose grouping method (by task or by task group) / 选择统计方式（按任务或按任务组）
+- **📊 Toggle between Chart View and List View** / **📊 在图表视图和列表视图之间切换**
+  - **Chart View**: Interactive pie chart showing time distribution / **图表视图**: 交互式饼图展示时长分布
+  - **List View**: Detailed statistics with metrics / **列表视图**: 详细的统计指标
+- Hover over pie chart segments to see detailed information / 鼠标悬停在饼图扇形上查看详细信息
 - View detailed learning/work time statistics / 查看详细的学习/工作时间统计
 
 ### Advanced Features / 高级功能
@@ -188,6 +198,7 @@ src/
 - **Timer Interface** / **计时器界面**: Countdown and forward timing modes
 - **Timer Paused Interface** / **计时器暂停界面**: Paused state with custom background
 - **Statistics Report** / **统计报告**: Detailed time analysis and metrics
+- **Statistics Chart View** / **统计图表视图**: Pie chart visualization of time distribution
 - **Settings Interface** / **设置界面**: Background customization and language settings
 - **Language Setting** / **语言设置**: Multilingual support demonstration
 
@@ -200,7 +211,8 @@ The following screenshots are currently available in the `screenshots/` director
 - `main-interface.png` - Main application interface
 - `timer.png` - Timer interface in running state
 - `timer-paused.png` - Timer interface in paused state
-- `statistics-report.png` - Statistics and analytics view
+- `statistics-report.png` - Statistics and analytics view (list view)
+- `statistics-chart.png` - Statistics pie chart view (NEW)
 - `settings-interface.png` - Settings and customization panel
 - `language-setting.png` - Language selection interface
 
@@ -220,6 +232,7 @@ MIT License
 
 - Built with [Tauri](https://tauri.app/)
 - UI icons by [Lucide](https://lucide.dev/)
+- Charts by [Recharts](https://recharts.org/)
 - Date handling by [date-fns](https://date-fns.org/)
 
 ---

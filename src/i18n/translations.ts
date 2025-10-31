@@ -67,6 +67,8 @@ export interface Translations {
   statisticsMethod: string;
   byTaskStatistics: string;
   byTaskGroupStatistics: string;
+  chartView: string;
+  listView: string;
   
   // Settings
   customizeTimerBackground: string;
@@ -177,6 +179,8 @@ export const translations: Record<Language, Translations> = {
     statisticsMethod: '统计方式',
     byTaskStatistics: '按任务统计',
     byTaskGroupStatistics: '按任务组统计',
+    chartView: '图表视图',
+    listView: '列表视图',
     
     // Settings
     customizeTimerBackground: '自定义计时器背景颜色和图片',
@@ -286,6 +290,8 @@ export const translations: Record<Language, Translations> = {
     statisticsMethod: 'Statistics Method',
     byTaskStatistics: 'By Task Statistics',
     byTaskGroupStatistics: 'By Task Group Statistics',
+    chartView: 'Chart View',
+    listView: 'List View',
     
     // Settings
     customizeTimerBackground: 'Customize timer background colors and images',

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Calendar, BarChart3, TrendingUp, Clock } from 'lucide-react';
+import { Calendar, BarChart3, TrendingUp, Clock, PieChart as PieChartIcon } from 'lucide-react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { ApiService } from '../services/api';
 import type { StatisticsRequest, StatisticsResponse, StatisticsPeriod } from '../types';
 import { formatDuration, getDateRange, formatDate, calculateCompletionRate } from '../utils/helpers';
@@ -13,6 +14,14 @@ export function Statistics() {
   const [customStartDate, setCustomStartDate] = useState('');
   const [customEndDate, setCustomEndDate] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showChart, setShowChart] = useState(true);
+
+  // 饼图颜色配置
+  const COLORS = [
+    '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8',
+    '#82ca9d', '#ffc658', '#ff7c7c', '#a4de6c', '#d084d0',
+    '#8dd1e1', '#ffb347', '#ba68c8', '#4db8ff', '#ff6b9d'
+  ];
 
   useEffect(() => {
     // 如果是自定义时间范围但没有设置日期，则不加载统计数据
@@ -127,6 +136,100 @@ export function Statistics() {
       case 'custom': return t.custom;
       default: return t.today;
     }
+  };
+
+  // 准备饼图数据
+  const preparePieChartData = () => {
+    if (!statistics) return [];
+
+    if (groupBy === 'Task') {
+      return statistics.task_statistics
+        .filter(stat => stat.total_duration_minutes > 0)
+        .map(stat => ({
+          name: stat.task_name,
+          value: stat.total_duration_minutes,
+          groupName: stat.task_group_name,
+        }));
+    } else {
+      return statistics.task_group_statistics
+        .filter(stat => stat.total_duration_minutes > 0)
+        .map(stat => ({
+          name: stat.task_group_name,
+          value: stat.total_duration_minutes,
+        }));
+    }
+  };
+
+  // 自定义饼图标签
+  const renderCustomLabel = (entry: any) => {
+    const percent = ((entry.value / entry.payload.totalValue) * 100).toFixed(1);
+    return `${percent}%`;
+  };
+
+  // 自定义 Tooltip
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="chart-tooltip">
+          <p className="tooltip-label">{data.name}</p>
+          {data.groupName && <p className="tooltip-group">{data.groupName}</p>}
+          <p className="tooltip-value">
+            {t.totalDuration}: {formatDuration(data.value, language)}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  // 渲染饼图
+  const renderPieChart = () => {
+    const chartData = preparePieChartData();
+    
+    if (chartData.length === 0) {
+      return (
+        <div className="empty-chart">
+          <PieChartIcon size={48} />
+          <p>{t.noData}</p>
+        </div>
+      );
+    }
+
+    const totalValue = chartData.reduce((sum, item) => sum + item.value, 0);
+    const dataWithTotal = chartData.map(item => ({ ...item, totalValue }));
+
+    return (
+      <div className="pie-chart-container">
+        <ResponsiveContainer width="100%" height={400}>
+          <PieChart>
+            <Pie
+              data={dataWithTotal}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={renderCustomLabel}
+              outerRadius={120}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {dataWithTotal.map((_entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip content={<CustomTooltip />} />
+            <Legend 
+              verticalAlign="bottom" 
+              height={36}
+              formatter={(value, entry: any) => {
+                const duration = formatDuration(entry.payload.value, language);
+                return `${value} (${duration})`;
+              }}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    );
   };
 
   const renderTaskStatistics = () => {
@@ -292,9 +395,30 @@ export function Statistics() {
                   </p>
                 </div>
               </div>
+              
+              <div className="view-toggle">
+                <button
+                  className={`btn ${showChart ? 'btn-primary' : 'btn-secondary'}`}
+                  onClick={() => setShowChart(true)}
+                >
+                  <PieChartIcon size={16} />
+                  {t.chartView || '图表视图'}
+                </button>
+                <button
+                  className={`btn ${!showChart ? 'btn-primary' : 'btn-secondary'}`}
+                  onClick={() => setShowChart(false)}
+                >
+                  <BarChart3 size={16} />
+                  {t.listView || '列表视图'}
+                </button>
+              </div>
             </div>
 
-            {groupBy === 'Task' ? renderTaskStatistics() : renderTaskGroupStatistics()}
+            {showChart ? (
+              renderPieChart()
+            ) : (
+              groupBy === 'Task' ? renderTaskStatistics() : renderTaskGroupStatistics()
+            )}
           </>
         )}
       </div>
